@@ -33,7 +33,6 @@ h2 {
   font-size: 2.5rem;
   margin-bottom: 4rem;
   font-weight: 700;
-  max-width: 63%;
 }
 
 h3 {
@@ -41,28 +40,10 @@ h3 {
   font-weight: 500;
 }
 
-.container {
-  background-image: url(./img/greenHexa.svg);
-  background-repeat: no-repeat;
-  background-position-x: center;
-  background-position-y: center;
-  width: 100vw;
-  height: 80vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  max-width: 80rem;
-  margin: 6vh auto;
-}
-
 .container > * {
   width: 100%;
 }
 
-.flex-column {
-  display: flex;
-  flex-direction: column;
-}
 
 .flex-center {
   justify-content: center;
@@ -79,19 +60,6 @@ h3 {
 
 .hidden {
   display: none;
-}
-
-/* BUTTONS */
-.btn {
-  font-size: 1.8rem;
-  padding: 1rem 0;
-  width: 20rem;
-  text-align: center;
-  border: 0.1rem solid #1f1e32;
-  margin-bottom: 1rem;
-  text-decoration: none;
-  color: #1f1e32;
-  background-color: white;
 }
 
 .input-field {

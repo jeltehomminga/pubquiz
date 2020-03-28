@@ -1,214 +1,143 @@
-import React, { Component, useState } from 'react'
-import axios from 'axios'
+import styled from "@emotion/styled";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import GameQuestions from "../components/GameQuestions";
+import UserResult from "../components/UserResult";
+import useFetch from "../hooks/useFetch";
+import { modifyResponseData, questionAmount } from "../utils";
+import "./game.css";
 
+const Btn = styled.div({
+  fontSize: 16,
+  padding: 8,
+  width: 170,
+  textAlign: "center",
+  border: "0.1rem solid #1f1e32",
+  marginBottom: "16px",
+  color: "#1f1e32",
+  textDecoration: "none",
+  backgroundColor: "white"
+});
+
+const FlexContainer = styled.div(({ column }) => ({
+  display: "flex",
+  flexDirection: column ? "column" : "row",
+  justifyContent: "center",
+  alignItems: "center"
+}));
+
+const ErrorView = () => (
+  <FlexContainer column>
+    <h1>
+      <span role="img" aria-label="beer-emoji">
+        🍺
+      </span>
+      <span>Pub Quiz</span>
+      <span role="img" aria-label="beer-emoji">
+        🍺
+      </span>
+    </h1>
+    <h1>
+      <span role="img" aria-label="beer-emoji">
+        🐒
+      </span>
+      API on break
+    </h1>
+    <Btn>
+      <Link type="submit" to="/">
+        Back
+      </Link>
+    </Btn>
+  </FlexContainer>
+);
 
 const Game = () => {
- const [name, setName] = useState(null)
+  const initialUserResult = () =>
+    JSON.parse(localStorage.getItem("userResults")) || [];
+  const [userResults, setUserResults] = useState([...initialUserResult()]);
+  const [score, setScore] = useState(0);
+  const [correctAnswers, setCorrectAnswers] = useState(0);
+  const [questionCounter, setQuestionCounter] = useState(0);
+  const { name = "Anonymous" } = useParams();
+  const navigate = useNavigate();
+  const lastQuestion = questionAmount - 1;
+  const url = `https://opentdb.com/api.php?amount=${questionAmount}&encode=url3986`;
+  const { data: questions, isLoading, isError } = useFetch(
+    url,
+    {},
+    modifyResponseData
+  );
+  const { answers, question } = questions[questionCounter] || {};
 
-}
+  useEffect(() => {
+    window.localStorage.setItem("userResults", JSON.stringify(userResults));
+  }, [userResults]);
 
+  const finishQuestion = (value, count) => {
+    const { correctAnswerIndex } = questions[questionCounter];
+    if (count && value === correctAnswerIndex) {
+      setScore(score + 100 + count);
+      setCorrectAnswers(correctAnswers + 1);
+    }
+    nextQuestion();
+  };
 
-class QuizGame extends Component {
-    state = {
-      name: "",
-      questions: [],
-      score: 0,
-      correctAnswers: 0,
-      timer: 30,
-      userResults: [],
-      questionCounter: 0,
-      answerIndex: 0,
-      result: false,
-      highScores: false,
-      highScoreArray: [],
-      error: "",
+  const nextQuestion = () => {
+    if (questionCounter < lastQuestion) setQuestionCounter(questionCounter + 1);
+    if (questionCounter >= lastQuestion - 1) {
+      const userResult = { name, score, correctAnswers };
+      const newUserResults = [...userResults, { ...userResult }].sort(
+        (a, b) => b.score - a.score
+      );
+      newUserResults.splice(10, newUserResults.length);
+      setUserResults(newUserResults);
     }
-    componentDidMount() {
-      axios
-        .get("https://opentdb.com/api.php?amount=10&encode=url3986")
-        .then(response => {
-          for (let key in this.state) {
-            if (localStorage.hasOwnProperty(key)) {
-              let value = localStorage.getItem(key)
-              try {
-                value = JSON.parse(value)
-                this.setState({ [key]: value })
-              } catch (e) {
-                this.setState({ [key]: value })
-              }
-            }
-          }
-          this.setState({
-            questions: response.data.results,
-            name: this.props.location.state.name,
-          })
-          this.shuffleCorrectAnswer()
-          this.startTimer()
-        })
-        .catch(error => {
-          console.log(error)
-          this.setState({ error: error })
-        })
-    }
-    handleClickAnswer = e => {
-      let newScore = this.state.score
-      let newCorrectAnswers = this.state.correctAnswers
-      if (
-        e.target.value === this.state.answerIndex ||
-        e.target.parentElement.parentElement.value === this.state.answerIndex ||
-        e.target.parentElement.value === this.state.answerIndex
-      ) {
-        newScore += 50 + this.state.timer
-        newCorrectAnswers += 1
-      }
-      if (this.state.questionCounter < 9) {
-        let newQuestionCounter = this.state.questionCounter + 1
-        this.setState(
-          {
-            score: newScore,
-            correctAnswers: newCorrectAnswers,
-            questionCounter: newQuestionCounter,
-            timer: 30,
-          },
-          () => this.shuffleCorrectAnswer()
-        )
-      } else {
-        const userResult = {
-          name: this.state.name,
-          score: newScore,
-          correctAnswers: this.state.correctAnswers,
-        }
-        let newUserResults = [...this.state.userResults, { ...userResult }]
-        this.setState({
-          score: newScore,
-          result: true,
-          userResults: newUserResults,
-        })
-        localStorage.setItem("userResults", JSON.stringify(newUserResults))
-        clearInterval(this.intervalRef)
-      }
-    }
-    nextQuestion = () => {
-      if (this.state.questionCounter < 9) {
-        let newQuestionCounter = this.state.questionCounter + 1
-        this.setState(
-          {
-            questionCounter: newQuestionCounter,
-            timer: 30,
-          },
-          () => this.shuffleCorrectAnswer()
-        )
-      } else {
-        const userResult = {
-          name: "",
-          score: this.state.score,
-          correctAnswers: this.state.correctAnswers,
-        }
-        let newUserResults = [...this.state.userResults, { ...userResult }]
-        this.setState({
-          result: true,
-          userResults: newUserResults,
-        })
-        localStorage.setItem("userResults", JSON.stringify(newUserResults))
-        clearInterval(this.intervalRef)
-      }
-    }
-    startTimer = () => {
-      this.intervalRef = setInterval(() => {
-        let newTime = this.state.timer - 1
-        if (newTime < 1) {
-          newTime = 30
-          this.nextQuestion()
-        }
-        this.setState({ timer: newTime })
-      }, 1000)
-    }
-    shuffleCorrectAnswer = () => {
-      let currentAnswers = [
-        ...this.state.questions[this.state.questionCounter]["incorrect_answers"],
-      ]
-      let answerIndex = Math.round(Math.random() * currentAnswers.length)
-      currentAnswers.splice(
-        answerIndex,
-        0,
-        this.state.questions[this.state.questionCounter]["correct_answer"]
-      )
-      this.setState({ currentAnswers, answerIndex })
-    }
-    handleClickNavigate = e => {
-      if (e.target.innerText === "New Game") {
-        this.props.navigate(withPrefix("/"))
-      } else if (e.target.innerText === "High Scores") {
-        let newResult = false
-        let newHighScores = true
-        let highScoreArray = this.state.userResults.sort(
-          (a, b) => b.score - a.score
-        )
-        highScoreArray.splice(10, highScoreArray.length)
-        this.setState({
-          result: newResult,
-          highScores: newHighScores,
-          highScoreArray: highScoreArray,
-        })
-      }
-    }
-    render() {
-      return (
-        <>
-          <div className="container">
-            {this.state.error ? (
-              <div id="home" className="flex-center flex-column">
-                <h1>
-                  <span role="img" aria-label="beer-emoji">
-                    🍺
-                  </span>{" "}
-                  Pub Quiz{" "}
-                  <span role="img" aria-label="beer-emoji">
-                    🍺
-                  </span>
-                </h1>
-                <h1>
-                  <span role="img" aria-label="beer-emoji">
-                    🐒
-                  </span>
-                  API on break
-                </h1>
-                <Link type="submit" className="btn" to="/">
-                  Back
-                </Link>
-              </div>
+  };
+
+  return (
+    <div style={{width: '65%'}}>
+      {isLoading ? (
+        <FlexContainer>
+          <span
+            role="img"
+            aria-label="hourglass-emoji"
+            style={{ fontSize: 48 }}
+          >
+            ⏳
+          </span>
+        </FlexContainer>
+      ) : isError ? (
+        <ErrorView />
+      ) : (
+        questions[questionCounter] && (
+          <FlexContainer column>
+            {questionCounter > questionAmount - 2 && userResults.length > 0 ? (
+              <UserResult {...{ score, correctAnswers }}>
+                <Btn onClick={() => navigate("/")}>New Game</Btn>
+                <Btn
+                  onClick={() =>
+                    navigate("/highscores", { state: { userResults } })
+                  }
+                >
+                  High Scores
+                </Btn>
+              </UserResult>
             ) : (
-              ""
+              <GameQuestions
+                {...{
+                  questionCounter,
+                  setQuestionCounter,
+                  answers,
+                  question,
+                  finishQuestion
+                }}
+              />
             )}
-  
-            {this.state.questions[this.state.questionCounter] && (
-              <div id="game" className="flex-center flex-column">
-                {this.state.result && this.state.result === true ? (
-                  <UserResult
-                    userResults={this.state.userResults}
-                    handleClickNavigate={this.handleClickNavigate}
-                  />
-                ) : (
-                  <>
-                    {this.state.highScores && this.state.highScores === true ? (
-                      <HighScores highScoreArray={this.state.highScoreArray} />
-                    ) : (
-                      <GameQuestions
-                        timer={this.state.timer}
-                        questions={this.state.questions}
-                        questionCounter={this.state.questionCounter}
-                        currentAnswers={this.state.currentAnswers}
-                        handleClickAnswer={this.handleClickAnswer}
-                      />
-                    )}
-                  </>
-                )}
-              </div>
-            )}
-          </div>
-        </>
-      )
-    }
-  }
-  
-  export default QuizGame
+          </FlexContainer>
+        )
+      )}
+    </div>
+  );
+};
+
+export default Game;

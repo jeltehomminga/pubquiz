@@ -1,12 +1,32 @@
-import React from 'react';
-import './App.css';
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import Login from "./components/Login";
+import Game from "./components/Game";
+import HighScores from "./components/HighScores";
+import styled from "@emotion/styled";
 
-function App() {
-  return (
-    <div >
+const Layout = styled.div({
+  backgroundImage: 'url("./img/greenHexa.svg")',
+  backgroundRepeat: "no-repeat",
+  backgroundPositionX: "center",
+  backgroundPositionY: "center",
+  width: "100vw",
+  height: "80vh",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
 
-    </div>
-  );
-}
+  "> *": {
+    width: "100%"
+  }
+});
 
-export default App;
+export default () => (
+  <Layout>
+    <Routes>
+      <Route exact path="/game/:name" element={<Game />} />
+      <Route path="/" element={<Login />} />
+      <Route path="highscores" element={<HighScores />} />
+    </Routes>
+  </Layout>
+);
