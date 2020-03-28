@@ -11,13 +11,6 @@
   color: #1f1e32;
 }
 
-html {
-  background: url(./img/greenHexa.svg);
-  background-position-x: -100px;
-  background-position-y: -400px;
-  background-repeat: no-repeat;
-}
-
 h1 {
   font-size: 3rem;
   margin-bottom: 4rem;
