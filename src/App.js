@@ -6,10 +6,6 @@ import HighScores from "./components/HighScores";
 import styled from "@emotion/styled";
 
 const Layout = styled.div({
-  backgroundImage: 'url("./img/greenHexa.svg")',
-  backgroundRepeat: "no-repeat",
-  backgroundPositionX: "center",
-  backgroundPositionY: "center",
   width: "100vw",
   height: "80vh",
   display: "flex",
