@@ -11,4 +11,4 @@ export const modifyResponseData = ({ results }) =>
 
 export const questionAmount = 10;
 
-export const colors = ["green", "orange", "pink", "teal", "yellow"];
+export const colors = ["cyan", "orange", "pink", "teal", "yellow"];

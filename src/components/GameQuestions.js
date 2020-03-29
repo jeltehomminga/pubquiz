@@ -2,8 +2,7 @@ import styled from "@emotion/styled";
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
-
-const ChoiceContainer = styled.li ({
+const ChoiceContainer = styled.li({
   display: "flex",
   marginBottom: "0.5rem",
   width: "92%",
@@ -43,27 +42,29 @@ const GameQuestions = ({
     <>
       <div className="timer">{count}</div>
       <h2>{question}</h2>
-      {answers?.map((answer, index) => (
-        <ChoiceContainer
-          key={`li-answer-${index}`}
-          onClick={() => finishQuestion(index, count)}
-        >
-          <ChoicePrefix className="choice-prefix">
-            {String.fromCharCode(65 + index)}
-          </ChoicePrefix>
-          <p style={{ padding: "1.5rem 2.5rem" }}>{answer}</p>
-        </ChoiceContainer>
-      ))}
+      <div>
+        {answers?.map((answer, index) => (
+          <ChoiceContainer
+            key={`li-answer-${index}`}
+            onClick={() => finishQuestion(index, count)}
+          >
+            <ChoicePrefix className="choice-prefix">
+              {String.fromCharCode(65 + index)}
+            </ChoicePrefix>
+            <p style={{ padding: "1.5rem 2.5rem" }}>{answer}</p>
+          </ChoiceContainer>
+        ))}
+      </div>
     </>
   );
 };
 
 GameQuestions.propTypes = {
-    questionCounter: PropTypes.number.isRequired,
-    setQuestionCounter: PropTypes.func.isRequired,
-    finishQuestion: PropTypes.func.isRequired,
-    answers: PropTypes.array.isRequired,
-    question: PropTypes.string.isRequired
-}
+  questionCounter: PropTypes.number.isRequired,
+  setQuestionCounter: PropTypes.func.isRequired,
+  finishQuestion: PropTypes.func.isRequired,
+  answers: PropTypes.array.isRequired,
+  question: PropTypes.string.isRequired
+};
 
 export default GameQuestions;

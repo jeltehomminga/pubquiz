@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { motion } from 'framer-motion'
 
 
 export const Btn = styled.div({
@@ -19,3 +20,14 @@ export const Btn = styled.div({
     justifyContent: "center",
     alignItems: "center",
   }));
+
+  export const CenteredDiv = styled(motion.div)({
+    minWidth: "50%",
+    minHeight: '50%',
+    backgroundColor: "white",
+    borderRadius: 30,
+    padding: 30,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-around'
+  });
