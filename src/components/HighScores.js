@@ -4,7 +4,8 @@ import { useLocation } from "react-router-dom";
 import { CenteredDiv, LinkButton } from "./elements";
 
 const HighScore = styled.table({
-  fontSize: 16
+  fontSize: 16,
+  margin: '16px 0'
 });
 
 const HighScores = () => {

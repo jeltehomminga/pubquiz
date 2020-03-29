@@ -1,25 +1,15 @@
 :root {
   background-color: whitesmoke;
   font-size: 60.5%;
-  --danger: #dc3545;
-  --success: #28a745;
-  --warning: #ffc107;
-  --primary: #007bff;
-  --secondary: #6c757d;
-  --info: #17a2b8;
-
   --cyan: #17a2b8;
-  --green: #28a745;
-  --indigo: #6610f2;
+  --indigo: #6f42c1;
   --orange: #fd7e14;
   --pink: #e83e8c;
-
-  --purple: #6f42c1;
   --teal: #20c997;
-  --red: #dc3545;
-  --white: #fff;
   --yellow: #ffc107;
 }
+
+/* "cyan", "orange", "pink", "teal", "yellow" */
 
 * {
   box-sizing: border-box;
