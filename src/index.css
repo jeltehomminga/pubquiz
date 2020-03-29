@@ -1,16 +1,12 @@
 :root {
   background-color: whitesmoke;
-  font-size: 52.5%;
+  font-size: 60.5%;
   --danger: #dc3545;
   --success: #28a745;
   --warning: #ffc107;
   --primary: #007bff;
   --secondary: #6c757d;
   --info: #17a2b8;
-  --gray: #6c757d;
-  --gray-dark: #343a40;
-  --dark: #343a40;
-  --light: #f8f9fa;
 
   --cyan: #17a2b8;
   --green: #28a745;
@@ -30,7 +26,12 @@
   font-family: "Titillium Web", sans-serif;
   margin: 0;
   padding: 0;
+  overflow: hidden;
   color: #1f1e32;
+}
+
+h2 {
+  font-size: 18px;
 }
 
 .btn:hover,
@@ -45,11 +46,4 @@
   cursor: not-allowed;
   box-shadow: none;
   transform: none;
-}
-
-@media screen and (max-width: 992px) {
-  :root {
-    background-color: whitesmoke;
-    font-size: 50.5%;
-  }
 }

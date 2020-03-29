@@ -6,10 +6,9 @@ import { colors } from "../utils";
 const QuestionLayoutContainer = styled(FlexContainer)(({ bgColor }) => ({
   height: "100vh",
   width: "100%",
-  margin: 0,
-  padding: 0,
   flexDirection: "column",
-  backgroundColor: `var(--${bgColor})`
+  backgroundColor: `var(--${bgColor})`,
+  textAlign: 'center'
 }));
 
 const QuestionLayout = ({ children, questionCounter }) => {

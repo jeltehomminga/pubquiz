@@ -4,10 +4,8 @@ import GameQuestions from "../components/GameQuestions";
 import UserResult from "../components/UserResult";
 import useFetch from "../hooks/useFetch";
 import { modifyResponseData, questionAmount } from "../utils";
-import { Btn, FlexContainer } from './elements';
-import "./game.css";
-import QuestionLayout from './QuestionLayout';
-
+import { Btn, FlexContainer } from "./elements";
+import QuestionLayout from "./QuestionLayout";
 
 const ErrorView = () => (
   <FlexContainer column>
@@ -34,7 +32,7 @@ const ErrorView = () => (
   </FlexContainer>
 );
 
-const Game = () => {
+const Game = ({ isReset }) => {
   const initialUserResult = () =>
     JSON.parse(localStorage.getItem("userResults")) || [];
   const [userResults, setUserResults] = useState([...initialUserResult()]);
@@ -57,12 +55,18 @@ const Game = () => {
   }, [userResults]);
 
   const finishQuestion = (value, count) => {
-    const { correctAnswerIndex } = questions[questionCounter];
-    if (count && value === correctAnswerIndex) {
-      setScore(score + 100 + count);
-      setCorrectAnswers(correctAnswers + 1);
+    if (isReset && questionCounter >= lastQuestion - 1) {
+      localStorage.clear("userResults");
+      setUserResults([]);
+      setQuestionCounter(questionCounter + 1);
+    } else {
+      const { correctAnswerIndex } = questions[questionCounter];
+      if (count && value === correctAnswerIndex) {
+        setScore(score + 100 + count);
+        setCorrectAnswers(correctAnswers + 1);
+      }
+      nextQuestion();
     }
-    nextQuestion();
   };
 
   const nextQuestion = () => {
@@ -94,9 +98,11 @@ const Game = () => {
       ) : (
         questions[questionCounter] && (
           <QuestionLayout questionCounter={questionCounter}>
-            {questionCounter > questionAmount - 2 && userResults.length > 0 ? (
-              <UserResult {...{ score, correctAnswers }}>
-                <Btn onClick={() => navigate("/")}>New Game</Btn>
+            {questionCounter > questionAmount - 2 ? (
+              <UserResult {...{ score, correctAnswers, isReset }}>
+                <Btn onClick={() => navigate("/")} style={{ marginRight: 16 }}>
+                  New Game
+                </Btn>
                 <Btn
                   onClick={() =>
                     navigate("/highscores", { state: { userResults } })
@@ -109,10 +115,10 @@ const Game = () => {
               <GameQuestions
                 {...{
                   questionCounter,
-                  setQuestionCounter,
                   answers,
                   question,
-                  finishQuestion
+                  finishQuestion,
+                  isReset
                 }}
               />
             )}

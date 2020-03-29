@@ -1,27 +1,31 @@
 import styled from "@emotion/styled";
-import React from "react";
+import React, { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import Game from "./components/Game";
 import HighScores from "./components/HighScores";
 import Login from "./components/Login";
 
 const Layout = styled.main({
-  width: "100vw",
-  height: "100vh",
+  width: "100%",
+  height: '100vh',
   margin: 0,
   padding: 0,
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
+  overflow: 'hidden',
   backgroundColor: `var(--indigo)`
 });
 
-export default () => (
+export default () => {
+  const [name, setName] = useState("");
+  const isReset = name.toUpperCase() === 'RESET ALL'
+  return (
   <Layout >
     <Routes>
-      <Route exact path="/game/:name" element={<Game />} />
-      <Route path="/" element={<Login />} />
-      <Route path="highscores" element={<HighScores />} />
+      <Route exact path="/game" element={<Game isReset={isReset}/>} />
+      <Route path="/" element={<Login {...{name, setName}} />}/>
+      <Route path="highscores" element={<HighScores isReset={isReset} />} />
     </Routes>
   </Layout>
-);
+)};

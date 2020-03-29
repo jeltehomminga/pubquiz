@@ -1,33 +1,10 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
 import styled from "@emotion/styled";
+import React from "react";
+import { useLocation } from "react-router-dom";
+import { CenteredDiv, LinkButton } from "./elements";
 
-const HighScoreContainer = styled.div({
-  alignItems: "center",
-  display: "flex",
-  flexDirection: "column"
-});
-
-const HighScore = styled.div({
-  display: "flex",
-  fontSize: "80%",
-  justifyContent: "space-between",
-  marginBottom: 10,
-  "> div": {
-    width: "30%"
-  }
-});
-
-const Btn = styled(Link)({
-  fontSize: 16,
-  padding: 8,
-  width: 170,
-  textAlign: "center",
-  border: "0.1rem solid #1f1e32",
-  marginBottom: "16px",
-  color: "#1f1e32",
-  textDecoration: "none",
-  backgroundColor: "white"
+const HighScore = styled.table({
+  fontSize: 16
 });
 
 const HighScores = () => {
@@ -37,32 +14,37 @@ const HighScores = () => {
     JSON.parse(localStorage.getItem("userResults")) ||
     [];
   return (
-    <HighScoreContainer>
-      <h1>high scores</h1>
+    <CenteredDiv
+      style={{ textAlign: "center", justifyContent: "space-between" }}
+      initial={{ opacity: 0, scale: 0.7, x: -200, y: 100 }}
+      animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
+      transition={{ duration: 0.7 }}
+    >
+      <h1>HIGH SCORES</h1>
       {userResults.length > 0 ? (
-        <div className="top3">
-          {userResults.map(({ score, correctAnswers, name }, index) => (
-            <HighScore key={`high-score-${index}`}>
-              <div>
-                <span>Score: </span>
-                <span>{score}</span>
-              </div>
-              <div>
-                <span>Correct: </span>
-                <span>{correctAnswers}</span>
-              </div>
-              <div>
-                <span>Name: </span>
-                <span>{name}</span>
-              </div>
-            </HighScore>
-          ))}
-        </div>
+        <HighScore>
+          <thead >
+            <tr style={{lineHeight: '32px'}}>
+              <th>Score</th>
+              <th>Correct</th>
+              <th>Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            {userResults.map(({ score, correctAnswers, name }, index) => (
+              <tr key={`high-score-${index}`} style={{lineHeight: '24px'}}>
+                <td>{score}</td>
+                <td>{correctAnswers}</td>
+                <td>{name}</td>
+              </tr>
+            ))}
+          </tbody>
+        </HighScore>
       ) : (
         <h2>Not enough scores yet</h2>
       )}
-      <Btn to="/">New Game</Btn>
-    </HighScoreContainer>
+      <LinkButton to="/">New Game</LinkButton>
+    </CenteredDiv>
   );
 };
 

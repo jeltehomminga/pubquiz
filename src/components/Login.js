@@ -1,6 +1,8 @@
 import styled from "@emotion/styled";
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
+import {Btn} from './elements'
 
 const Form = styled.form({
   width: 200,
@@ -20,12 +22,11 @@ const FormField = styled.input({
   textDecoration: "none"
 });
 
-const Login = () => {
-  const [name, setName] = useState("");
+const Login = ({name, setName}) => {
   const navigate = useNavigate();
   const handleSubmit = e => {
     e.preventDefault();
-    navigate(`game/${name}`);
+    navigate(`game`);
   };
   return (
     <Form onSubmit={handleSubmit}>
@@ -36,9 +37,15 @@ const Login = () => {
         value={name}
         required
       />
-      <FormField type="submit" value="Play" readOnly />
+      <Btn type="submit" value="Play"  >Play</Btn>
     </Form>
   );
 };
+
+Login.propTypes = {
+  name: PropTypes.string,
+  setName: PropTypes.func.isRequired
+};
+
 
 export default Login;
