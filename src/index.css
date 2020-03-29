@@ -1,6 +1,28 @@
 :root {
   background-color: whitesmoke;
   font-size: 52.5%;
+  --danger: #dc3545;
+  --success: #28a745;
+  --warning: #ffc107;
+  --primary: #007bff;
+  --secondary: #6c757d;
+  --info: #17a2b8;
+  --gray: #6c757d;
+  --gray-dark: #343a40;
+  --dark: #343a40;
+  --light: #f8f9fa;
+
+  --cyan: #17a2b8;
+  --green: #28a745;
+  --indigo: #6610f2;
+  --orange: #fd7e14;
+  --pink: #e83e8c;
+
+  --purple: #6f42c1;
+  --teal: #20c997;
+  --red: #dc3545;
+  --white: #fff;
+  --yellow: #ffc107;
 }
 
 * {
@@ -9,62 +31,6 @@
   margin: 0;
   padding: 0;
   color: #1f1e32;
-}
-
-h1 {
-  font-size: 3rem;
-  margin-bottom: 4rem;
-}
-
-h1 > span {
-  font-size: 2.4rem;
-
-  font-weight: 500;
-}
-
-h2 {
-  font-size: 2.5rem;
-  margin-bottom: 4rem;
-  font-weight: 700;
-}
-
-h3 {
-  font-size: 2rem;
-  font-weight: 500;
-}
-
-.container > * {
-  width: 100%;
-}
-
-
-.flex-center {
-  justify-content: center;
-  align-items: center;
-}
-
-.justify-center {
-  justify-content: center;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.hidden {
-  display: none;
-}
-
-.input-field {
-  font-size: 1.8rem;
-  padding: 1rem 0;
-  width: 20rem;
-  text-align: center;
-  border: 0.1rem solid #1f1e32;
-  margin-bottom: 1rem;
-  text-decoration: none;
-  color: #1f1e32;
-  background-color: white;
 }
 
 .btn:hover,

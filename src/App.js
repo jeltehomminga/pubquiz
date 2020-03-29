@@ -1,24 +1,21 @@
+import styled from "@emotion/styled";
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import Login from "./components/Login";
 import Game from "./components/Game";
 import HighScores from "./components/HighScores";
-import styled from "@emotion/styled";
+import Login from "./components/Login";
 
-const Layout = styled.div({
+const Layout = styled.main({
   width: "100vw",
-  height: "80vh",
+  height: "100vh",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-
-  "> *": {
-    width: "100%"
-  }
+  backgroundColor: `var(--indigo)`
 });
 
 export default () => (
-  <Layout>
+  <Layout >
     <Routes>
       <Route exact path="/game/:name" element={<Game />} />
       <Route path="/" element={<Login />} />

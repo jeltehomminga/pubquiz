@@ -10,3 +10,5 @@ export const modifyResponseData = ({ results }) =>
   });
 
 export const questionAmount = 10;
+
+export const colors = ["green", "orange", "pink", "teal", "yellow"];

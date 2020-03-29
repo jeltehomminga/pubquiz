@@ -1,30 +1,13 @@
-import styled from "@emotion/styled";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import GameQuestions from "../components/GameQuestions";
 import UserResult from "../components/UserResult";
 import useFetch from "../hooks/useFetch";
 import { modifyResponseData, questionAmount } from "../utils";
+import { Btn, FlexContainer } from './elements';
 import "./game.css";
+import QuestionLayout from './QuestionLayout';
 
-const Btn = styled.div({
-  fontSize: 16,
-  padding: 8,
-  width: 170,
-  textAlign: "center",
-  border: "0.1rem solid #1f1e32",
-  marginBottom: "16px",
-  color: "#1f1e32",
-  textDecoration: "none",
-  backgroundColor: "white"
-});
-
-const FlexContainer = styled.div(({ column }) => ({
-  display: "flex",
-  flexDirection: column ? "column" : "row",
-  justifyContent: "center",
-  alignItems: "center"
-}));
 
 const ErrorView = () => (
   <FlexContainer column>
@@ -95,7 +78,7 @@ const Game = () => {
   };
 
   return (
-    <div style={{width: '65%'}}>
+    <>
       {isLoading ? (
         <FlexContainer>
           <span
@@ -110,7 +93,7 @@ const Game = () => {
         <ErrorView />
       ) : (
         questions[questionCounter] && (
-          <FlexContainer column>
+          <QuestionLayout questionCounter={questionCounter}>
             {questionCounter > questionAmount - 2 && userResults.length > 0 ? (
               <UserResult {...{ score, correctAnswers }}>
                 <Btn onClick={() => navigate("/")}>New Game</Btn>
@@ -133,10 +116,10 @@ const Game = () => {
                 }}
               />
             )}
-          </FlexContainer>
+          </QuestionLayout>
         )
       )}
-    </div>
+    </>
   );
 };
 

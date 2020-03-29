@@ -7,7 +7,7 @@ const ChoiceContainer = styled.li ({
   display: "flex",
   marginBottom: "0.5rem",
   width: "92%",
-  fontSize: "1.5rem",
+  fontSize: "12px",
   border: "0.1rem solid rgba(86, 165, 235, 0.3)",
   backgroundColor: "white"
 });
