@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import GameQuestions from "../components/GameQuestions";
 import UserResult from "../components/UserResult";
 import useFetch from "../hooks/useFetch";
@@ -32,14 +32,13 @@ const ErrorView = () => (
   </FlexContainer>
 );
 
-const Game = ({ isReset }) => {
+const Game = ({ isReset, name }) => {
   const initialUserResult = () =>
     JSON.parse(localStorage.getItem("userResults")) || [];
   const [userResults, setUserResults] = useState([...initialUserResult()]);
   const [score, setScore] = useState(0);
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [questionCounter, setQuestionCounter] = useState(0);
-  const { name = "Anonymous" } = useParams();
   const navigate = useNavigate();
   const lastQuestion = questionAmount - 1;
   const url = `https://opentdb.com/api.php?amount=${questionAmount}&encode=url3986`;

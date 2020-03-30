@@ -7,25 +7,26 @@ import Login from "./components/Login";
 
 const Layout = styled.main({
   width: "100%",
-  height: '100vh',
+  height: "100vh",
   margin: 0,
   padding: 0,
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  overflow: 'hidden',
+  overflow: "hidden",
   backgroundColor: `var(--indigo)`
 });
 
 export default () => {
   const [name, setName] = useState("");
-  const isReset = name.toUpperCase() === 'RESET ALL'
+  const isReset = name.toUpperCase() === "RESET ALL";
   return (
-  <Layout >
-    <Routes>
-      <Route exact path="/game" element={<Game isReset={isReset}/>} />
-      <Route path="/" element={<Login {...{name, setName}} />}/>
-      <Route path="highscores" element={<HighScores isReset={isReset} />} />
-    </Routes>
-  </Layout>
-)};
+    <Layout>
+      <Routes>
+        <Route exact path="/game" element={<Game {...{ isReset, name }} />} />
+        <Route path="/" element={<Login {...{ name, setName }} />} />
+        <Route path="highscores" element={<HighScores isReset={isReset} />} />
+      </Routes>
+    </Layout>
+  );
+};
