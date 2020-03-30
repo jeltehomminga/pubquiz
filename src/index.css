@@ -1,6 +1,7 @@
 :root {
   background-color: whitesmoke;
   font-size: 60.5%;
+  min-width: 300px;
   --cyan: #17a2b8;
   --indigo: #6f42c1;
   --orange: #fd7e14;
@@ -9,7 +10,6 @@
   --yellow: #ffc107;
 }
 
-/* "cyan", "orange", "pink", "teal", "yellow" */
 
 * {
   box-sizing: border-box;
@@ -22,18 +22,4 @@
 
 h2 {
   font-size: 18px;
-}
-
-.btn:hover,
-.choice-container:hover {
-  cursor: pointer;
-  box-shadow: 0 0.4rem 1.4rem 0 rgba(13, 36, 48, 0.5);
-  transform: translateY(-0.1rem);
-  transition: transform 150ms;
-}
-
-.btn[disabled]:hover {
-  cursor: not-allowed;
-  box-shadow: none;
-  transform: none;
 }
