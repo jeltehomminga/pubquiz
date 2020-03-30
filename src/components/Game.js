@@ -100,7 +100,7 @@ const Game = ({ isReset }) => {
           <QuestionLayout questionCounter={questionCounter}>
             {questionCounter > questionAmount - 2 ? (
               <UserResult {...{ score, correctAnswers, isReset }}>
-                <Btn onClick={() => navigate("/")} style={{ marginRight: 16 }}>
+                <Btn onClick={() => navigate("/")} >
                   New Game
                 </Btn>
                 <Btn

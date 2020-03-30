@@ -17,7 +17,7 @@ const FormField = styled.input({
   width: 170,
   textAlign: "center",
   border: "0.1rem solid #1f1e32",
-  marginBottom: "16px",
+  margin: "16px auto",
   color: "#1f1e32",
   textDecoration: "none"
 });

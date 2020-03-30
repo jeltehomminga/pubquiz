@@ -4,11 +4,10 @@ import PropTypes from "prop-types";
 
 const ScoreRow = styled.div({
   fontSize: 18,
-  display: 'flex',
-  justifyContent: 'space-around',
-  width: '200px',
-  margin: '0 auto'
-
+  display: "flex",
+  justifyContent: "space-around",
+  width: "200px",
+  margin: "0 auto"
 });
 
 const UserResult = ({ score, correctAnswers, children, isReset = false }) => (
@@ -28,7 +27,7 @@ const UserResult = ({ score, correctAnswers, children, isReset = false }) => (
         </ScoreRow>
       </>
     )}
-    <div style={{ margin: "0 auto" }}>{children}</div>
+    <div style={{ margin: "0 auto", width: "min-content" }}>{children}</div>
   </>
 );
 

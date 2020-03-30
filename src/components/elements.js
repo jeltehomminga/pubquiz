@@ -24,7 +24,7 @@ const buttonStyle = {
 
 export const Btn = styled.button({
   ...buttonStyle,
-  marginRight: 16, 
+  margin: '8px auto', 
 });
 
 export const LinkButton = styled(Link)({
