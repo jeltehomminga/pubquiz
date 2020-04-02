@@ -1,26 +1,29 @@
 import styled from "@emotion/styled";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
+import { colors } from "../utils";
 import { FlexContainer } from "./elements";
 
-const ChoiceContainer = styled.li({
+const ChoiceContainer = styled.li(({ bgColor }) => ({
   display: "flex",
   marginBottom: "0.5rem",
-  fontSize: "12px",
-  border: "0.1rem solid rgba(86, 165, 235, 0.3)",
-  backgroundColor: "white",
+  fontSize: 12,
+  border: `1px solid var(--${bgColor})`,
+  background: `linear-gradient(to right, var(--${bgColor}), white)`,
+  borderRadius: 10,
 
-  ":hover": {
-    cursor: "pointer",
-    boxShadow: "0 0.4rem 1.4rem 0 rgba(13, 36, 48, 0.5)",
-    transform: "translateY(-0.1rem)",
-    transition: "transform 150ms"
+  "@media (min-width: 1200px)": {
+    ":hover": {
+      cursor: "pointer",
+      boxShadow: "0 0.4rem 1.4rem 0 rgba(13, 36, 48, 0.5)",
+      transform: "translateY(-0.1rem)",
+      transition: "transform 150ms"
+    }
   }
-});
+}));
 
 const ChoicePrefix = styled.p({
-  padding: "1.5rem 2.5rem",
-  backgroundColor: "#1f1e32",
+  padding: "1.5rem 4.5rem 1.5rem 2.5rem",
   color: "white"
 });
 
@@ -32,6 +35,9 @@ const GameQuestions = ({
   question
 }) => {
   const [count, setCount] = useState(30);
+  const isSireneCount = count % 2 !== 0 && count < 6;
+  const colorIndex = questionCounter % colors.length;
+  const bgColor = colors[colorIndex];
 
   useEffect(() => {
     if (questionCounter !== null && questionCounter < 10) {
@@ -52,20 +58,17 @@ const GameQuestions = ({
         style={{
           width: "100%",
           justifyContent: "space-around",
-          fontSize: "24px"
+          fontSize: 24,
+          lineHeight: "24px"
         }}
       >
-        {count < 6 && (
-          <span role="img" aria-label="siren-emoji">
-            🚨
-          </span>
-        )}
+        <span role="img" aria-label="siren-emoji">
+          {isSireneCount && "🚨"}
+        </span>
         {count}
-        {count < 6 && (
-          <span role="img" aria-label="siren-emoji">
-            🚨
-          </span>
-        )}
+        <span role="img" aria-label="siren-emoji">
+          {isSireneCount && "🚨"}
+        </span>
       </FlexContainer>
       <h2 style={{ margin: "25px 0" }}>{question}</h2>
       <div>
@@ -73,8 +76,11 @@ const GameQuestions = ({
           <ChoiceContainer
             key={`li-answer-${index}`}
             onClick={() => finishQuestion(index, count)}
+            bgColor={bgColor}
           >
-            <ChoicePrefix>{String.fromCharCode(65 + index)}</ChoicePrefix>
+            <ChoicePrefix>
+              {String.fromCharCode(65 + index)}
+            </ChoicePrefix>
             <p style={{ padding: "1.5rem 2.5rem" }}>{answer}</p>
           </ChoiceContainer>
         ))}
@@ -82,6 +88,7 @@ const GameQuestions = ({
     </>
   );
 };
+
 
 GameQuestions.propTypes = {
   questionCounter: PropTypes.number.isRequired,

@@ -117,7 +117,7 @@ const Game = ({ isReset, name }) => {
                   answers,
                   question,
                   finishQuestion,
-                  isReset
+                  isReset,
                 }}
               />
             )}

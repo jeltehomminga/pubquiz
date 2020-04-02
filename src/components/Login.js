@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import {Btn} from './elements'
@@ -28,6 +28,11 @@ const Login = ({name, setName}) => {
     e.preventDefault();
     navigate(`game`);
   };
+
+  useEffect(() => {
+    setName(() => '')
+  }, [setName])
+  
   return (
     <Form onSubmit={handleSubmit}>
       <FormField
