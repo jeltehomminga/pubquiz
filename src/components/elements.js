@@ -45,7 +45,7 @@ export const CenteredDiv = styled(motion.div)({
   minHeight: "50%",
   backgroundColor: "white",
   borderRadius: 30,
-  padding: 30,
+  padding: '30px 20px',
   margin: 15,
   display: "flex",
   flexDirection: "column",

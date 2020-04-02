@@ -6,16 +6,17 @@ import { FlexContainer } from "./elements";
 
 const ChoiceContainer = styled.li(({ bgColor }) => ({
   display: "flex",
-  marginBottom: "0.5rem",
+  margin: '10px',
   fontSize: 12,
   border: `1px solid var(--${bgColor})`,
   background: `linear-gradient(to right, var(--${bgColor}), white)`,
-  borderRadius: 10,
+  borderRadius: '10px',
 
   "@media (min-width: 1200px)": {
     ":hover": {
       cursor: "pointer",
-      boxShadow: "0 0.4rem 1.4rem 0 rgba(13, 36, 48, 0.5)",
+      borderRadius: '10px',
+      boxShadow: "1px 4px 8px 0 rgba(13, 36, 48, 0.5)",
       transform: "translateY(-0.1rem)",
       transition: "transform 150ms"
     }
@@ -23,7 +24,7 @@ const ChoiceContainer = styled.li(({ bgColor }) => ({
 }));
 
 const ChoicePrefix = styled.p({
-  padding: "1.5rem 4.5rem 1.5rem 2.5rem",
+  padding: "1.5rem 2rem",
   color: "white"
 });
 
