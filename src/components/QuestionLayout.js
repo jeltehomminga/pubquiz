@@ -12,7 +12,7 @@ const QuestionLayoutContainer = styled(FlexContainer)(({ bgColor }) => ({
 }));
 
 const QuestionLayout = ({ children, questionCounter }) => {
-  const colorIndex = (questionCounter % colors.length);
+  const colorIndex = questionCounter % colors.length;
   const bgColor = colors[colorIndex];
   return (
     <QuestionLayoutContainer bgColor={bgColor}>

@@ -8,7 +8,7 @@ const useFetch = (url, initialData = null, changeDataCallback) => {
 
   useEffect(() => {
     let didCancel = false;
-
+    
     const fetchData = async () => {
       setIsError(false);
       setIsLoading(true);
@@ -24,7 +24,7 @@ const useFetch = (url, initialData = null, changeDataCallback) => {
     fetchData();
     return () => (didCancel = true);
   }, [changeDataCallback, url]);
-  
+
   return { data, setData, isLoading, isError };
 };
 

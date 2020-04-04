@@ -6,16 +6,16 @@ import { FlexContainer } from "./elements";
 
 const ChoiceContainer = styled.li(({ bgColor }) => ({
   display: "flex",
-  margin: '10px',
+  margin: "10px",
   fontSize: 12,
   border: `1px solid var(--${bgColor})`,
   background: `linear-gradient(to right, var(--${bgColor}), white)`,
-  borderRadius: '10px',
+  borderRadius: "10px",
 
   "@media (min-width: 1200px)": {
     ":hover": {
       cursor: "pointer",
-      borderRadius: '10px',
+      borderRadius: "10px",
       boxShadow: "1px 4px 8px 0 rgba(13, 36, 48, 0.5)",
       transform: "translateY(-0.1rem)",
       transition: "transform 150ms"
@@ -23,10 +23,18 @@ const ChoiceContainer = styled.li(({ bgColor }) => ({
   }
 }));
 
+const CounterContainer = styled(FlexContainer)({
+  width: "100%",
+  justifyContent: "space-around",
+  fontSize: 24,
+  lineHeight: "24px"
+});
+
 const ChoicePrefix = styled.p({
   padding: "1.5rem 2rem",
   color: "white"
 });
+
 
 const GameQuestions = ({
   isReset,
@@ -55,14 +63,7 @@ const GameQuestions = ({
 
   return (
     <>
-      <FlexContainer
-        style={{
-          width: "100%",
-          justifyContent: "space-around",
-          fontSize: 24,
-          lineHeight: "24px"
-        }}
-      >
+      <CounterContainer>
         <span role="img" aria-label="siren-emoji">
           {isSireneCount && "🚨"}
         </span>
@@ -70,7 +71,7 @@ const GameQuestions = ({
         <span role="img" aria-label="siren-emoji">
           {isSireneCount && "🚨"}
         </span>
-      </FlexContainer>
+      </CounterContainer>
       <h2 style={{ margin: "25px 0" }}>{question}</h2>
       <div>
         {answers?.map((answer, index) => (
@@ -79,9 +80,7 @@ const GameQuestions = ({
             onClick={() => finishQuestion(index, count)}
             bgColor={bgColor}
           >
-            <ChoicePrefix>
-              {String.fromCharCode(65 + index)}
-            </ChoicePrefix>
+            <ChoicePrefix>{String.fromCharCode(65 + index)}</ChoicePrefix>
             <p style={{ padding: "1.5rem 2.5rem" }}>{answer}</p>
           </ChoiceContainer>
         ))}
@@ -89,7 +88,6 @@ const GameQuestions = ({
     </>
   );
 };
-
 
 GameQuestions.propTypes = {
   questionCounter: PropTypes.number.isRequired,

@@ -5,7 +5,7 @@ import { CenteredDiv, LinkButton } from "./elements";
 
 const HighScore = styled.table({
   fontSize: 16,
-  margin: '16px 0'
+  margin: "16px 0"
 });
 
 const HighScores = () => {
@@ -24,8 +24,8 @@ const HighScores = () => {
       <h1>HIGH SCORES</h1>
       {userResults.length > 0 ? (
         <HighScore>
-          <thead >
-            <tr style={{lineHeight: '32px'}}>
+          <thead>
+            <tr style={{ lineHeight: "32px" }}>
               <th>Score</th>
               <th>Correct</th>
               <th>Name</th>
@@ -33,7 +33,7 @@ const HighScores = () => {
           </thead>
           <tbody>
             {userResults.map(({ score, correctAnswers, name }, index) => (
-              <tr key={`high-score-${index}`} style={{lineHeight: '24px'}}>
+              <tr key={`high-score-${index}`} style={{ lineHeight: "24px" }}>
                 <td>{score}</td>
                 <td>{correctAnswers}</td>
                 <td>{name}</td>

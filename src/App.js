@@ -23,8 +23,8 @@ export default () => {
   return (
     <Layout>
       <Routes>
-        <Route exact path="/game" element={<Game {...{ isReset, name }} />} />
         <Route path="/" element={<Login {...{ name, setName }} />} />
+        <Route path="game" element={<Game {...{ isReset, name }} />} />
         <Route path="highscores" element={<HighScores isReset={isReset} />} />
       </Routes>
     </Layout>

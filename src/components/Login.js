@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import {Btn} from './elements'
+import { Btn } from "./elements";
 
 const Form = styled.form({
   width: 200,
@@ -22,7 +22,7 @@ const FormField = styled.input({
   textDecoration: "none"
 });
 
-const Login = ({name, setName}) => {
+const Login = ({ name, setName }) => {
   const navigate = useNavigate();
   const handleSubmit = e => {
     e.preventDefault();
@@ -30,9 +30,9 @@ const Login = ({name, setName}) => {
   };
 
   useEffect(() => {
-    setName(() => '')
-  }, [setName])
-  
+    setName(() => "");
+  }, [setName]);
+
   return (
     <Form onSubmit={handleSubmit}>
       <FormField
@@ -42,7 +42,9 @@ const Login = ({name, setName}) => {
         value={name}
         required
       />
-      <Btn type="submit" value="Play"  >Play</Btn>
+      <Btn type="submit" value="Play">
+        Play
+      </Btn>
     </Form>
   );
 };
@@ -51,6 +53,5 @@ Login.propTypes = {
   name: PropTypes.string,
   setName: PropTypes.func.isRequired
 };
-
 
 export default Login;

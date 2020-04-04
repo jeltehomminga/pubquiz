@@ -40,44 +40,46 @@ const Game = ({ isReset, name }) => {
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [questionCounter, setQuestionCounter] = useState(0);
   const navigate = useNavigate();
-  const lastQuestion = questionAmount - 1;
+  const lastQuestionNumber = questionAmount - 1;
+  const isLastQuestion = questionCounter === lastQuestionNumber - 1;
   const url = `https://opentdb.com/api.php?amount=${questionAmount}&encode=url3986`;
   const { data: questions, isLoading, isError } = useFetch(
     url,
     {},
     modifyResponseData
   );
-  const { answers, question } = questions[questionCounter] || {};
+  const { answers, question, correctAnswerIndex } =
+    questions[questionCounter] || {};
 
   useEffect(() => {
     window.localStorage.setItem("userResults", JSON.stringify(userResults));
   }, [userResults]);
 
-  const finishQuestion = (value, count) => {
-    if (isReset && questionCounter >= lastQuestion - 1) {
-      localStorage.clear("userResults");
-      setUserResults([]);
-      setQuestionCounter(questionCounter + 1);
-    } else {
-      const { correctAnswerIndex } = questions[questionCounter];
-      if (count && value === correctAnswerIndex) {
-        setScore(score + 100 + count);
-        setCorrectAnswers(correctAnswers + 1);
-      }
-      nextQuestion();
-    }
+  const resetResults = () => {
+    localStorage.clear("userResults");
+    setUserResults([]);
   };
 
-  const nextQuestion = () => {
-    if (questionCounter < lastQuestion) setQuestionCounter(questionCounter + 1);
-    if (questionCounter >= lastQuestion - 1) {
-      const userResult = { name, score, correctAnswers };
-      const newUserResults = [...userResults, { ...userResult }].sort(
-        (a, b) => b.score - a.score
-      );
-      newUserResults.splice(10, newUserResults.length);
-      setUserResults(newUserResults);
-    }
+  const setNewResults = () => {
+    const newUserResults = [
+      ...userResults,
+      { name, score, correctAnswers }
+    ].sort((a, b) => b.score - a.score);
+    setUserResults(newUserResults.splice(10, 1));
+  };
+
+  const registerQuestionResults = () =>
+    isReset ? resetResults() : setNewResults();
+
+  const handleCorrectAnswer = count => {
+    setScore(score + 100 + count);
+    setCorrectAnswers(correctAnswers + 1);
+  };
+
+  const finishQuestion = (value, count) => {
+    if (value === correctAnswerIndex) handleCorrectAnswer(count);
+    if (isLastQuestion) registerQuestionResults();
+    setQuestionCounter(questionCounter + 1);
   };
 
   return (
@@ -95,13 +97,12 @@ const Game = ({ isReset, name }) => {
       ) : isError ? (
         <ErrorView />
       ) : (
-        questions[questionCounter] && (
-          <QuestionLayout questionCounter={questionCounter}>
-            {questionCounter > questionAmount - 2 ? (
+        <QuestionLayout questionCounter={questionCounter}>
+          {questionCounter > lastQuestionNumber ? (
+            <>
+              <h1>test</h1>
               <UserResult {...{ score, correctAnswers, isReset }}>
-                <Btn onClick={() => navigate("/")} >
-                  New Game
-                </Btn>
+                <Btn onClick={() => navigate("/")}>New Game</Btn>
                 <Btn
                   onClick={() =>
                     navigate("/highscores", { state: { userResults } })
@@ -110,19 +111,19 @@ const Game = ({ isReset, name }) => {
                   High Scores
                 </Btn>
               </UserResult>
-            ) : (
-              <GameQuestions
-                {...{
-                  questionCounter,
-                  answers,
-                  question,
-                  finishQuestion,
-                  isReset,
-                }}
-              />
-            )}
-          </QuestionLayout>
-        )
+            </>
+          ) : (
+            <GameQuestions
+              {...{
+                questionCounter,
+                answers,
+                question,
+                finishQuestion,
+                isReset
+              }}
+            />
+          )}
+        </QuestionLayout>
       )}
     </>
   );
