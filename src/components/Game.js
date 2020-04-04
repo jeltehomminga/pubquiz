@@ -41,7 +41,7 @@ const Game = ({ isReset, name }) => {
   const [questionCounter, setQuestionCounter] = useState(0);
   const navigate = useNavigate();
   const lastQuestionNumber = questionAmount - 1;
-  const isLastQuestion = questionCounter === lastQuestionNumber - 1;
+  const isLastQuestion = questionCounter === lastQuestionNumber;
   const url = `https://opentdb.com/api.php?amount=${questionAmount}&encode=url3986`;
   const { data: questions, isLoading, isError } = useFetch(
     url,
@@ -65,7 +65,8 @@ const Game = ({ isReset, name }) => {
       ...userResults,
       { name, score, correctAnswers }
     ].sort((a, b) => b.score - a.score);
-    setUserResults(newUserResults.splice(10, 1));
+    newUserResults.splice(10, 1);
+    setUserResults(newUserResults);
   };
 
   const registerQuestionResults = () =>
