@@ -29,6 +29,8 @@ const Login = ({ name, setName }) => {
     navigate(`game`);
   };
 
+  // Since I want to keep the name available untill the name is set on the results at the end 
+  //  I choose to reset the name when the user comes to the Login again
   useEffect(() => {
     setName(() => "");
   }, [setName]);

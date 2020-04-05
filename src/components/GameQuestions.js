@@ -12,6 +12,8 @@ const ChoiceContainer = styled.li(({ bgColor }) => ({
   background: `linear-gradient(to right, var(--${bgColor}), white)`,
   borderRadius: "10px",
 
+  // I used the media to prevent unwanted hover effects on mobile, 
+  // alternatively it would be possible to use the onMouseOver onMouseOut events
   "@media (min-width: 1200px)": {
     ":hover": {
       cursor: "pointer",
@@ -40,7 +42,7 @@ const GameQuestions = ({
   isReset,
   questionCounter,
   finishQuestion,
-  answers,
+  answers = [],
   question
 }) => {
   const [count, setCount] = useState(30);
@@ -72,6 +74,13 @@ const GameQuestions = ({
           {isSireneCount && "🚨"}
         </span>
       </CounterContainer>
+        {/* The finishQuestion here uses the count. 
+        Although it was no requirement to use the count to determine the score 
+        I think it's better to differentiate the score bases on time left 
+        This however has the effect that Questions will render each count
+        If the count is deifnitely not needed 
+        I would pass the question and answers as Children to the component
+        */}
       <h2 style={{ margin: "25px 0" }}>{question}</h2>
       <div>
         {answers?.map((answer, index) => (
@@ -92,7 +101,6 @@ const GameQuestions = ({
 GameQuestions.propTypes = {
   questionCounter: PropTypes.number.isRequired,
   finishQuestion: PropTypes.func.isRequired,
-  answers: PropTypes.array.isRequired,
   question: PropTypes.string.isRequired,
   isReset: PropTypes.bool
 };

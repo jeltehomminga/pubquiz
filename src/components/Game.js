@@ -36,16 +36,24 @@ const Game = ({ isReset, name }) => {
   const initialUserResult = () =>
     JSON.parse(localStorage.getItem("userResults")) || [];
   const [userResults, setUserResults] = useState([...initialUserResult()]);
-  const [score, setScore] = useState(0);
-  const [correctAnswers, setCorrectAnswers] = useState(0);
+
+  // score and correctAnswers are always uodated together therefor it makes most sense to put them in one object
+  const [userScore, setUserScore] = useState({
+    score: 0,
+    correctAnswers: 0
+  });
+  const { score, correctAnswers } = userScore;
   const [questionCounter, setQuestionCounter] = useState(0);
   const navigate = useNavigate();
   const lastQuestionNumber = questionAmount - 1;
   const isLastQuestion = questionCounter === lastQuestionNumber;
   const url = `https://opentdb.com/api.php?amount=${questionAmount}&encode=url3986`;
+
+  // I do the useFetch in this component because it makes more sense to me to fetch all the needed questions at once
+  // instead per question. Otherwise there is a risk there is an error halfway the questions and the quiz cannot be finished
+  // Also I think it's better to not have a loading time between questions, although this could be prevented with fetching earlier
   const { data: questions, isLoading, isError } = useFetch(
     url,
-    {},
     modifyResponseData
   );
   const { answers, question, correctAnswerIndex } =
@@ -61,10 +69,9 @@ const Game = ({ isReset, name }) => {
   };
 
   const setNewResults = () => {
-    const newUserResults = [
-      ...userResults,
-      { name, score, correctAnswers }
-    ].sort((a, b) => b.score - a.score);
+    const newUserResults = [...userResults, { name, ...userScore }].sort(
+      (a, b) => b.score - a.score
+    );
     newUserResults.splice(10, 1);
     setUserResults(newUserResults);
   };
@@ -73,8 +80,10 @@ const Game = ({ isReset, name }) => {
     isReset ? resetResults() : setNewResults();
 
   const handleCorrectAnswer = count => {
-    setScore(score + 100 + count);
-    setCorrectAnswers(correctAnswers + 1);
+    setUserScore({
+      score: score + 100 + count,
+      correctAnswers: correctAnswers + 1
+    });
   };
 
   const finishQuestion = (value, count) => {
@@ -115,6 +124,8 @@ const Game = ({ isReset, name }) => {
             </>
           ) : (
             <GameQuestions
+              // Although I think it's better to prevent spreading props unless you are using High Order Components
+              // Here I spread specific props I want to pass as an alternative to repeating prop={prop}, prop={prop}
               {...{
                 questionCounter,
                 answers,
