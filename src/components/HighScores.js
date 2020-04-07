@@ -5,15 +5,16 @@ import { CenteredDiv, LinkButton } from "./elements";
 
 const HighScore = styled.table({
   fontSize: 16,
-  margin: "16px 0"
+  margin: "16px 0",
 });
 
 const HighScores = () => {
   const location = useLocation();
   let userResults =
-    location?.state?.userResults ||
+    location.state?.userResults ||
     JSON.parse(localStorage.getItem("userResults")) ||
     [];
+  let gameId = location?.state?.id;
   return (
     <CenteredDiv
       style={{ textAlign: "center", justifyContent: "space-between" }}
@@ -32,8 +33,14 @@ const HighScores = () => {
             </tr>
           </thead>
           <tbody>
-            {userResults.map(({ score, correctAnswers, name }, index) => (
-              <tr key={`high-score-${index}`} style={{ lineHeight: "24px" }}>
+            {userResults.map(({ score, correctAnswers, name, id }, index) => (
+              <tr
+                key={`high-score-${index}`}
+                style={{
+                  lineHeight: "24px",
+                  fontWeight: gameId === id ? "bold" : "normal",
+                }}
+              >
                 <td>{score}</td>
                 <td>{correctAnswers}</td>
                 <td>{name}</td>

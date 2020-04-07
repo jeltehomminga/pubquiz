@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import GameQuestions from "../components/GameQuestions";
 import UserResult from "../components/UserResult";
@@ -6,6 +6,7 @@ import useFetch from "../hooks/useFetch";
 import { modifyResponseData, questionAmount } from "../utils";
 import { Btn, FlexContainer } from "./elements";
 import QuestionLayout from "./QuestionLayout";
+import Confetti from "react-confetti";
 
 const ErrorView = () => (
   <FlexContainer column>
@@ -40,13 +41,17 @@ const Game = ({ isReset, name }) => {
   // score and correctAnswers are always uodated together therefor it makes most sense to put them in one object
   const [userScore, setUserScore] = useState({
     score: 0,
-    correctAnswers: 0
+    correctAnswers: 0,
   });
+
+  const gameId = useRef(name + Math.random());
   const { score, correctAnswers } = userScore;
   const [questionCounter, setQuestionCounter] = useState(0);
   const navigate = useNavigate();
   const lastQuestionNumber = questionAmount - 1;
   const isLastQuestion = questionCounter === lastQuestionNumber;
+  const position = userResults.findIndex((el) => el.id === gameId.current) + 1;
+
   const url = `https://opentdb.com/api.php?amount=${questionAmount}&encode=url3986`;
 
   // I do the useFetch in this component because it makes more sense to me to fetch all the needed questions at once
@@ -69,20 +74,22 @@ const Game = ({ isReset, name }) => {
   };
 
   const setNewResults = () => {
-    const newUserResults = [...userResults, { name, ...userScore }].sort(
-      (a, b) => b.score - a.score
-    );
+    const newUserResults = [
+      ...userResults,
+      { name, ...userScore, id: gameId.current },
+    ].sort((a, b) => b.score - a.score);
     newUserResults.splice(10, 1);
+
     setUserResults(newUserResults);
   };
 
   const registerQuestionResults = () =>
     isReset ? resetResults() : setNewResults();
 
-  const handleCorrectAnswer = count => {
+  const handleCorrectAnswer = (count) => {
     setUserScore({
       score: score + 100 + count,
-      correctAnswers: correctAnswers + 1
+      correctAnswers: correctAnswers + 1,
     });
   };
 
@@ -110,12 +117,13 @@ const Game = ({ isReset, name }) => {
         <QuestionLayout questionCounter={questionCounter}>
           {questionCounter > lastQuestionNumber ? (
             <>
-              <h1>test</h1>
-              <UserResult {...{ score, correctAnswers, isReset }}>
+              <UserResult {...{ score, correctAnswers, isReset, position }}>
                 <Btn onClick={() => navigate("/")}>New Game</Btn>
                 <Btn
                   onClick={() =>
-                    navigate("/highscores", { state: { userResults } })
+                    navigate("/highscores", {
+                      state: { userResults, id: gameId.current },
+                    })
                   }
                 >
                   High Scores
@@ -131,7 +139,7 @@ const Game = ({ isReset, name }) => {
                 answers,
                 question,
                 finishQuestion,
-                isReset
+                isReset,
               }}
             />
           )}
