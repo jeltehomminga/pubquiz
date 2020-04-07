@@ -6,6 +6,9 @@ import useFetch from "../hooks/useFetch";
 import { modifyResponseData, questionAmount } from "../utils";
 import { Btn, FlexContainer } from "./elements";
 import QuestionLayout from "./QuestionLayout";
+import useSound from "use-sound";
+import correctSound from "../sounds/correct.mp3";
+import wrongSound from "../sounds/toolatebuzz.mp3";
 
 const ErrorView = () => (
   <FlexContainer column>
@@ -36,12 +39,15 @@ const Game = ({ isReset, name }) => {
   const initialUserResult = () =>
     JSON.parse(localStorage.getItem("userResults")) || [];
   const [userResults, setUserResults] = useState([...initialUserResult()]);
-
   // score and correctAnswers are always uodated together therefor it makes most sense to put them in one object
   const [userScore, setUserScore] = useState({
     score: 0,
     correctAnswers: 0,
   });
+
+  // some sound for fun 
+  const [playCorrect] = useSound(correctSound);
+  const [playWrong] = useSound(wrongSound, { volume: 0.4 });
 
   const gameId = useRef(name + Math.random());
   const { score, correctAnswers } = userScore;
@@ -50,7 +56,6 @@ const Game = ({ isReset, name }) => {
   const lastQuestionNumber = questionAmount - 1;
   const isLastQuestion = questionCounter === lastQuestionNumber;
   const position = userResults.findIndex((el) => el.id === gameId.current) + 1;
-
   const url = `https://opentdb.com/api.php?amount=${questionAmount}&encode=url3986`;
 
   // I do the useFetch in this component because it makes more sense to me to fetch all the needed questions at once
@@ -78,7 +83,6 @@ const Game = ({ isReset, name }) => {
       { name, ...userScore, id: gameId.current },
     ].sort((a, b) => b.score - a.score);
     newUserResults.splice(10, 1);
-
     setUserResults(newUserResults);
   };
 
@@ -86,6 +90,7 @@ const Game = ({ isReset, name }) => {
     isReset ? resetResults() : setNewResults();
 
   const handleCorrectAnswer = (count) => {
+    playCorrect();
     setUserScore({
       score: score + 100 + count,
       correctAnswers: correctAnswers + 1,
@@ -93,7 +98,7 @@ const Game = ({ isReset, name }) => {
   };
 
   const finishQuestion = (value, count) => {
-    if (value === correctAnswerIndex) handleCorrectAnswer(count);
+    value === correctAnswerIndex ? handleCorrectAnswer(count) : playWrong();
     if (isLastQuestion) registerQuestionResults();
     setQuestionCounter(questionCounter + 1);
   };

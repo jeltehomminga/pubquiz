@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "@emotion/styled";
 import PropTypes from "prop-types";
 import useWindowSize from "../hooks/useWindowSize";
 import Confetti from "react-confetti";
 import { confettiColors as colors } from "../utils";
+import useSound from "use-sound";
+import yaaaySound from '../sounds/celebrate.mp3'
 
 const ScoreRow = styled.div({
   fontSize: 18,
@@ -21,6 +23,12 @@ const UserResult = ({
   position,
 }) => {
   const { width, height } = useWindowSize();
+  const [playYaaaySound] = useSound(yaaaySound)
+
+  useEffect(() => {
+    position && playYaaaySound()
+  }, [playYaaaySound, position])
+ 
   return (
     <>
       {isReset ? (
@@ -49,6 +57,7 @@ UserResult.propTypes = {
   correctAnswers: PropTypes.number,
   children: PropTypes.array.isRequired,
   isReset: PropTypes.bool,
+  position: PropTypes.number
 };
 
 export default UserResult;

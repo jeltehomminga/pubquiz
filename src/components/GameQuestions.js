@@ -41,7 +41,7 @@ const GameQuestions = ({
   isReset,
   questionCounter,
   finishQuestion,
-  answers = [],
+  answers,
   question
 }) => {
   const [count, setCount] = useState(30);
@@ -53,6 +53,8 @@ const GameQuestions = ({
     if (questionCounter !== null && questionCounter < 10) {
       const delay = isReset ? 50 : 1000;
       setCount(() => 30);
+      // 😳 yes I used var for function scope. For consistency I can understand that you want 
+      // to declare let variable before, but this seems valid case for the use of var otherwise
       var id = setInterval(() => setCount(count => count - 1), delay);
       return () => clearInterval(id);
     } else clearInterval(id);
@@ -101,6 +103,7 @@ GameQuestions.propTypes = {
   questionCounter: PropTypes.number.isRequired,
   finishQuestion: PropTypes.func.isRequired,
   question: PropTypes.string.isRequired,
+  answers: PropTypes.array.isRequired,
   isReset: PropTypes.bool
 };
 
