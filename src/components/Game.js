@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import GameQuestions from "../components/GameQuestions";
 import UserResult from "../components/UserResult";
@@ -6,7 +6,6 @@ import useFetch from "../hooks/useFetch";
 import { modifyResponseData, questionAmount } from "../utils";
 import { Btn, FlexContainer } from "./elements";
 import QuestionLayout from "./QuestionLayout";
-import Confetti from "react-confetti";
 
 const ErrorView = () => (
   <FlexContainer column>
